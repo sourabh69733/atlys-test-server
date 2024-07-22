@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from typing import List, Dict, Optional
+from fastapi import HTTPException
 
 def get_product_title(product_soup: BeautifulSoup) -> str:
     """
@@ -61,6 +62,24 @@ def get_image_url(product_soup: BeautifulSoup) -> str:
         print(f"An error occurred while extracting the product image URL: {e}")
         return ''
 
+def check_url_accessibility(url: str) -> None:
+    """
+    Checks if the provided URL is accessible.
+
+    Args:
+        url (str): The URL to check.
+
+    Raises:
+        HTTPException: If the URL is not accessible.
+    """
+    try:
+        response = requests.head(url, allow_redirects=True)
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail="URL is not accessible")
+    except requests.RequestException as e:
+        raise HTTPException(status_code=400, detail=f"Failed to access URL: {e}")
+
+
 def scrape_catalogue(url: str, num_pages: int, proxy_string: Optional[str] = None) -> List[Dict[str, str]]:
     """
     Scrapes product information from a catalogue and stores it in a SQLite database.
@@ -75,6 +94,9 @@ def scrape_catalogue(url: str, num_pages: int, proxy_string: Optional[str] = Non
     Returns:
         List[Dict[str, str]]: A list of dictionaries containing product information.
     """
+    
+    check_url_accessibility(url)
+    
     proxies = {
         'http': proxy_string,
         'https': proxy_string

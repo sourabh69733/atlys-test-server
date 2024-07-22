@@ -28,4 +28,8 @@ def scrape_catalogue_endpoint(url: str, num_pages: int, proxy: Union[str, None] 
             "total_products": len(products)
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to scrape catalogue: {e}")
+        status_code = 500
+        # Extract the status code if available
+        if e.status_code is not None:
+            status_code = e.status_code
+        raise HTTPException(status_code=status_code, detail=f"Failed to scrape catalogue: {e}")
