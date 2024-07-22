@@ -15,8 +15,6 @@ def test_scrape_catalogue_success():
     assert response.status_code == 200
     json_response = response.json()
     
-    print('response', json_response)
-    
     assert json_response["status"] == "ok"
     assert "inserted_count" in json_response
     assert "existing_count" in json_response
