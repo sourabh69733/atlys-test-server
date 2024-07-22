@@ -20,18 +20,20 @@ def test_scrape_catalogue_success():
     assert "existing_count" in json_response
     assert "total_products" in json_response
     
-# def test_scrape_catalogue_failure():
-#     # To test failure, you need to ensure the conditions lead to a failure scenario
-#     # For this example, we'll use a URL that doesn't exist or a bad request
-#     url = "https://invalid-url.com"
-#     num_pages = 1
+def test_scrape_catalogue_failure():
+    # To test failure, you need to ensure the conditions lead to a failure scenario
+    # For this example, we'll use a URL that doesn't exist or a bad request
+    url = "https://invalid-url.com"
+    num_pages = 1
 
-#     # Simulate a failure by calling the real endpoint
-#     response = client.post("/scrape", params={"url": url, "num_pages": num_pages})
+    # Simulate a failure by calling the real endpoint
+    response = client.post("/scrape", params={"url": url, "num_pages": num_pages})
     
-#     assert response.status_code == 500
-#     json_response = response.json()
-#     assert "detail" in json_response
+    
+    assert response.status_code == 400
+    json_response = response.json()
+    
+    assert "detail" in json_response
 
 def test_read_root():
     response = client.get("/")
