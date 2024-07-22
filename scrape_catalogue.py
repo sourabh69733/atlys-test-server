@@ -1,11 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-import sqlite3
-from typing import List, Dict, Optional, Tuple
-import hashlib
-import os
-from database import insert_product
+from typing import List, Dict, Optional
 
 def get_product_title(product_soup: BeautifulSoup) -> str:
     """
@@ -18,7 +14,7 @@ def get_product_title(product_soup: BeautifulSoup) -> str:
         str: The product title.
     """
     try:
-        title_html = product_soup.find(attrs={"class": re.compile('.product.*(title|brand|name)')})
+        title_html = product_soup.find(attrs={"class": re.compile('.*product.*(title|brand|name)')})
         return title_html.text.strip() if title_html else ''
     except Exception as e:
         print(f"An error occurred while extracting the product title: {e}")
@@ -39,7 +35,7 @@ def get_product_price(product_soup: BeautifulSoup) -> str:
         for del_tag in del_tags:
             del_tag.decompose()
 
-        price_html = product_soup.find("span", attrs={"class": re.compile('.*price.*', flags=re.I)})
+        price_html = product_soup.find("span", attrs={"class": re.compile('.*(price|cost).*', flags=re.I)})
         return price_html.text.strip() if price_html else ''
     except Exception as e:
         print(f"An error occurred while extracting the product price: {e}")
@@ -65,7 +61,7 @@ def get_image_url(product_soup: BeautifulSoup) -> str:
         print(f"An error occurred while extracting the product image URL: {e}")
         return ''
 
-def scrape_catalogue(db_name: str, url: str, num_pages: int, proxy_string: Optional[str] = None) -> Tuple[List[Dict[str, str]], int, int]:
+def scrape_catalogue(url: str, num_pages: int, proxy_string: Optional[str] = None) -> List[Dict[str, str]]:
     """
     Scrapes product information from a catalogue and stores it in a SQLite database.
     Returns the list of products and the counts of inserted and existing products.
@@ -77,8 +73,7 @@ def scrape_catalogue(db_name: str, url: str, num_pages: int, proxy_string: Optio
         proxy_string (Optional[str]): The proxy string for making requests.
 
     Returns:
-        Tuple[List[Dict[str, str]], int, int]: A list of dictionaries containing product information,
-        the count of newly inserted products, and the count of already existing products.
+        List[Dict[str, str]]: A list of dictionaries containing product information.
     """
     proxies = {
         'http': proxy_string,
@@ -86,9 +81,7 @@ def scrape_catalogue(db_name: str, url: str, num_pages: int, proxy_string: Optio
     } if proxy_string else None
     
     product_info = []
-    inserted_count = 0
-    existing_count = 0
-
+    
     for page in range(1, num_pages + 1):
         page_url = f"{url}/page/{page}"
         try:
@@ -111,15 +104,10 @@ def scrape_catalogue(db_name: str, url: str, num_pages: int, proxy_string: Optio
                     'product_image_url': product_image_url,
                 })
                 
-                # Insert product into SQLite database and update counts
-                if insert_product(db_name, product_title, product_price, product_image_url):
-                    inserted_count += 1
-                else:
-                    existing_count += 1
         except requests.RequestException as e:
             print(f"An error occurred while making a request to {page_url}: {e}")
         except Exception as e:
             print(f"An unexpected error occurred while processing the page: {e}")
     
-    return product_info, inserted_count, existing_count
+    return product_info
 

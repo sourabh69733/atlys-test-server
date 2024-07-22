@@ -1,7 +1,7 @@
 from typing import Union
 from fastapi import FastAPI, HTTPException
 from database import create_database
-from scrape_catalogue import scrape_catalogue
+from store_and_scrape import store_and_scrape
 
 app = FastAPI()
 
@@ -20,7 +20,7 @@ def scrape_catalogue_endpoint(url: str, num_pages: int, proxy: Union[str, None] 
     try:
         init_db_services()
 
-        products, inserted_count, existing_count = scrape_catalogue(DATABASE_NAME, url, num_pages, proxy_string=proxy)
+        products, inserted_count, existing_count = store_and_scrape(DATABASE_NAME, url, num_pages, proxy_string=proxy)
         return {
             "status": "ok",
             "inserted_count": inserted_count,
