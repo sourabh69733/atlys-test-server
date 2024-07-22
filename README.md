@@ -5,7 +5,7 @@
 This project sets up a FastAPI server for handling product data scraping and management. The server is designed to be run in a production environment using `uvicorn` as the ASGI server.
 
 ### Project Structure
-
+```
 /project-root
 │
 ├── main.py # Main FastAPI application file
@@ -15,7 +15,7 @@ This project sets up a FastAPI server for handling product data scraping and man
 │ └── test_main.py # Unit tests for the FastAPI application
 └── /venv # Python virtual environment directory (auto-created)
 
-
+```
 ### Main Components
 
 1. **`main.py`**:
@@ -46,6 +46,7 @@ This project sets up a FastAPI server for handling product data scraping and man
 ```bash
 git clone https://your-repository-url.git
 cd your-project-directory
+```
 
 ### 2. Run the Setup Script
 On macOS/Linux:
@@ -53,15 +54,38 @@ Make the script executable and run it:
 ```bash
 chmod +x setup.sh
 ./setup.sh
-
+```
 On Windows:
 Open PowerShell and run:
 
 ```
 .\setup.sh
+```
 
 ### 3. Verify the Setup
-The FastAPI server should start and be accessible at http://0.0.0.0:8000.
-Check the interactive API documentation at http://0.0.0.0:8000/docs.
+The FastAPI server should start and be accessible at `http://0.0.0.0:8000`.
+
+Check the interactive API documentation at `http://0.0.0.0:8000/docs`.
+
+### 4. Test APIs
+Send post request to endpoint `http://0.0.0.0:8000/scrape` with `url` and `num_pages` params.
+
+Sample Request
+```
+curl -X 'POST' \
+  'http://0.0.0.0:8000/scrape?url=https%3A%2F%2Fdentalstall.com%2Fshop&num_pages=2' \
+  -H 'accept: application/json' \
+  -d ''
+```
+
+Sample Response will be 
+```
+{
+  "status": "ok",
+  "inserted_count": 48,
+  "existing_count": 96,
+  "total_products": 144
+}
+```
 
 
