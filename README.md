@@ -10,7 +10,7 @@ This project sets up a FastAPI server for handling product data scraping and man
 │
 ├── main.py # Main FastAPI application file
 ├── requirements.txt # List of Python dependencies
-├── setup.sh # Setup script for creating environment and running server
+├── setup_and_run_server.sh # Setup script for creating environment and running server
 ├── /tests # Directory containing unit tests
 │ └── test_main.py # Unit tests for the FastAPI application
 └── /venv # Python virtual environment directory (auto-created)
@@ -31,7 +31,7 @@ This project sets up a FastAPI server for handling product data scraping and man
      - `beautifulsoup4`: For parsing HTML content.
      - `pytest`: Testing framework for unit tests.
 
-3. **`setup.sh`**:
+3. **`setup_and_run_server.sh`**:
    - A script to set up the Python virtual environment, install dependencies, and start the FastAPI server.
    - Supports macOS, Linux, and Windows environments.
 
@@ -52,14 +52,14 @@ cd your-project-directory
 On macOS/Linux:
 Make the script executable and run it:
 ```bash
-chmod +x setup.sh
-./setup.sh
+chmod +x setup_and_run_server.sh
+./setup_and_run_server.sh
 ```
 On Windows:
 Open PowerShell and run:
 
 ```
-.\setup.sh
+.\setup_and_run_server.sh
 ```
 
 ### 3. Verify the Setup
