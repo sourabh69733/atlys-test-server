@@ -44,8 +44,8 @@ This project sets up a FastAPI server for handling product data scraping and man
 ### 1. Clone the Repository
 
 ```bash
-git clone https://your-repository-url.git
-cd your-project-directory
+git clone git@github.com:sourabh69733/atlys-test-server.git
+cd atlys-test-server
 ```
 
 ### 2. Run the Setup Script
@@ -66,6 +66,8 @@ Open PowerShell and run:
 The FastAPI server should start and be accessible at `http://0.0.0.0:8000`.
 
 Check the interactive API documentation at `http://0.0.0.0:8000/docs`.
+Example: `http://0.0.0.0:8000/docs#/default/scrape_catalogue_endpoint_scrape_post`
+
 
 ### 4. Test APIs
 Send post request to endpoint `http://0.0.0.0:8000/scrape` with `url` and `num_pages` params.
