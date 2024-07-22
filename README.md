@@ -38,6 +38,11 @@ This project sets up a FastAPI server for handling product data scraping and man
 4. **`/tests`**:
    - Contains unit tests for verifying the functionality of the FastAPI application.
    - `test_main.py`: Test cases for the `/scrape` endpoint and other functionalities.
+   - You can run test cases with command
+      ```
+         pytest -s  tests/
+      ```
+
 
 ## Setup Instructions
 
