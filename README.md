@@ -43,6 +43,11 @@ This project sets up a FastAPI server for handling product data scraping and man
          pytest -s  tests/
       ```
 
+## Authentication
+
+We are using static token for authenticating requests.
+1. Token value is `SERVER_TOKEN`.
+2. You need to pass in `token` header with value as 1st point.
 
 ## Setup Instructions
 
@@ -80,8 +85,9 @@ Send post request to endpoint `http://0.0.0.0:8000/scrape` with `url` and `num_p
 Sample Request
 ```
 curl -X 'POST' \
-  'http://0.0.0.0:8000/scrape?url=https%3A%2F%2Fdentalstall.com%2Fshop&num_pages=2' \
+  'http://0.0.0.0:8000/scrape?url=https%3A%2F%2Fdentalstall.com%2Fshop&num_pages=1' \
   -H 'accept: application/json' \
+  -H 'token: SERVER_TOKEN' \
   -d ''
 ```
 
@@ -89,9 +95,9 @@ Sample Response will be
 ```
 {
   "status": "ok",
-  "inserted_count": 48,
-  "existing_count": 96,
-  "total_products": 144
+  "inserted_count": 49,
+  "existing_count": 23,
+  "total_products": 72
 }
 ```
 
