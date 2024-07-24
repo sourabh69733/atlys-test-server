@@ -1,11 +1,25 @@
 from typing import Union
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends, Header
 from database import create_database
 from store_and_scrape import store_and_scrape
 
 app = FastAPI()
 
 DATABASE_NAME = 'products.production.db'
+STATIC_TOKEN = "SERVER_TOKEN"  # Replace with your secure static token
+
+def verify_static_token(token: str = Header(...)) -> None:
+    """
+    Verifies that the provided token matches the static token.
+
+    Args:
+        token (str): The token to verify.
+
+    Raises:`
+        HTTPException: If the token is invalid.
+    """
+    if token != STATIC_TOKEN:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 def init_db_services() -> bool:
     create_database(DATABASE_NAME)
@@ -16,7 +30,7 @@ def read_root():
     return {"Hello": "World"}
 
 @app.post("/scrape")
-def scrape_catalogue_endpoint(url: str, num_pages: int, proxy: Union[str, None] = None):
+def scrape_catalogue_endpoint(url: str, num_pages: int, proxy: Union[str, None] = None, token: str = Depends(verify_static_token)):
     try:
         init_db_services()
 
