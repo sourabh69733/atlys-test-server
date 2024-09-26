@@ -1,7 +1,7 @@
 from typing import Union
 from fastapi import FastAPI, HTTPException, Depends, Header
 from database import create_database
-from store_and_scrape import store_and_scrape
+from catalogue_scraper import store_and_scrape
 
 app = FastAPI()
 

@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/Users/sourabh/nexus/tech/fast_api/catalogue_scraper')
+
 from scrape_catalogue import scrape_catalogue
 from typing import List, Dict, Optional, Tuple
 from database import insert_product
